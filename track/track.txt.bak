@@ -9,20 +9,48 @@ namesRows = []
 marksRows = []
 a=0
 for i in resultsAndNames:
+    print(resultsAndNames[a].find("a"))
     if a%2==0:
-        namesRows.append(resultsAndNames[a])
-        a=a+1
-    elif a%2==1:
-        a=a+1
+        if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:
+            namesRows.append(resultsAndNames[a])
+            b=a+1
+            marksRows.append(resultsAndNames[b])
+    a=a+1
 
+print(namesRows[0].find("a").getText())
+
+print(marksRows[0].prettify())
+
+for i in namesRows
+marksRows[0]
+
+if "Wis_Stevens_Point" not in namesRows[0].find("a"):
+    print ("LOL")
+
+marksRows[0].findAll("li")
+
+marks=[]
+championMark=0
 a=0
-for i in resultsAndNames:
-    if a%2 == 1:
-        marksRows.append(resultsAndNames[a])
-        a=a+1
-    elif a%2==0:
-        a=a+1
-    
+for each in marksRows:
+    marks=marksRows[a].findAll("li")
+    b=0
+    for eachMark in marks:
+        if marks[b].getText()!="FOUL":
+            if int(marks[b].getText())>championMark:
+                championMark=int(marks[b].getText())
+        print(championMark)
+        b=b+1
+    a=a+1
+    print(one)
+
+for eachMark in marks:
+    if "FOUL" in marks[b].getText:
+        if marks[b].getText>championMark:
+            championMark=marks[b].getText
+    print(championMark)
+    b=b+1
+
 
 
 text=resultsTable.prettify()
