@@ -1,0 +1,31 @@
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+
+html = urlopen("https://www.tfrrs.org/results/70848/4344849/WIAC_Tri/Men's_Shot_Put/")
+soup=BeautifulSoup(html.read());
+resultsTable=soup.find("tbody")
+resultsAndNames=resultsTable.find_all("tr")
+namesRows = []
+marksRows = []
+a=0
+for i in resultsAndNames:
+    if a%2==0:
+        namesRows.append(resultsAndNames[a])
+        a=a+1
+    elif a%2==1:
+        a=a+1
+
+a=0
+for i in resultsAndNames:
+    if a%2 == 1:
+        marksRows.append(resultsAndNames[a])
+        a=a+1
+    elif a%2==0:
+        a=a+1
+    
+
+
+text=resultsTable.prettify()
+f = open(r"C:\Users\akopp\Desktop\print\track\results.txt", "a", encoding="utf-8")
+f.write(text)
+f.close()
