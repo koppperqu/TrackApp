@@ -7,16 +7,23 @@ resultsTable=soup.find("tbody")
 resultsAndNames=resultsTable.find_all("tr")
 namesRows = []
 marksRows = []
+a=0
 for i in resultsAndNames:
-    if i % 2 == 0:
-        namesRows.append(resultsAndNames)
- 
+    if a%2==0:
+        namesRows.append(resultsAndNames[a])
+        a=a+1
+    elif a%2==1:
+        a=a+1
+
+a=0
 for i in resultsAndNames:
-    if i % 2 == 1:
-        marksRows.append(resultsAndNames)
+    if a%2 == 1:
+        marksRows.append(resultsAndNames[a])
+        a=a+1
+    elif a%2==0:
+        a=a+1
     
-    
-print(soup.title)
+
 
 text=resultsTable.prettify()
 f = open(r"C:\Users\akopp\Desktop\print\track\results.txt", "a", encoding="utf-8")
