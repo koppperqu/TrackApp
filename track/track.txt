@@ -11,8 +11,12 @@ namesRows = []
 #Grab rows of point throwers
 #Sort through the rows to grab names and marks
 #print out the marks
+
+#Gonna need to grab all marks from meet as cant figure out how to extract best mark of meet from namesRows
+#I belive the code from before works will just need to format it a little was coming out with /name
+# just had a thought maybe it is from prettify the \n CHECK THIS FIRST NEXT TIME
 names=[]
-highestmark[]
+highestmark=[]
 
 a=0
 for i in resultsAndNames:
@@ -21,6 +25,12 @@ for i in resultsAndNames:
             namesRows.append(resultsAndNames[a])
     a=a+1
 
+a=0
+for i in namesRows:
+    round = namesRows[a].find(class_=True).attrs['class'][0]
+    highestmark.append(namesRows[a].find("td", { "class" : round}).getText())
+    names.append(namesRows[a].find("a").getText())
+    a=a+1
 
 
 

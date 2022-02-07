@@ -6,10 +6,40 @@ soup=BeautifulSoup(html.read());
 resultsTable=soup.find("tbody")
 resultsAndNames=resultsTable.find_all("tr")
 namesRows = []
-marksRows = []
+#marksRows = []
+#Only need nameRows gets name can verify college and also give best mark of meet
+#Grab rows of point throwers
+#Sort through the rows to grab names and marks
+#print out the marks
+names=[]
+highestmark=[]
+
 a=0
 for i in resultsAndNames:
-    print(resultsAndNames[a].find("a"))
+    if a%2==0:
+        if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:
+            namesRows.append(resultsAndNames[a])
+    a=a+1
+
+a=0
+for i in namesRows:
+    round = namesRows[a].find(class_=True).attrs['class'][0]
+    highestmark.append(namesRows[a].find("td", { "class" : round }).getText())
+    names.append(namesRows[a].find("a").getText())
+    a=a+1
+
+
+
+
+
+
+
+
+
+
+
+a=0
+for i in resultsAndNames:
     if a%2==0:
         if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:
             namesRows.append(resultsAndNames[a])
@@ -30,13 +60,13 @@ if "Wis_Stevens_Point" not in namesRows[0].find("a"):
 marksRows[0].findAll("li")
 
 marks=[]
-championMark=0
 a=0
 for each in marksRows:
     marks=marksRows[a].findAll("li")
     b=0
+    championMark=0
     for eachMark in marks:
-        if marks[b].getText()!="FOUL":
+        if marks[b].getText() in "FOUL":
             if int(marks[b].getText())>championMark:
                 championMark=int(marks[b].getText())
         print(championMark)
