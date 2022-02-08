@@ -78,7 +78,6 @@ for i in names:
 
 
 
-
 text=resultsTable.prettify()
 f = open(r"C:\Users\akopp\Desktop\print\track\results.txt", "a", encoding="utf-8")
 f.write(text)

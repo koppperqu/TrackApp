@@ -1,6 +1,6 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-
+#insert correct url
 html = urlopen("https://www.tfrrs.org/results/70849/4360880/Big_Dawg_Invitational/")
 soup=BeautifulSoup(html.read());
 resultsTable=soup.find("tbody")
