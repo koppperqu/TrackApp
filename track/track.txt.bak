@@ -1,8 +1,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from numpy import *
 
-html = urlopen("https://www.tfrrs.org/results/70848/4344849/WIAC_Tri/Men's_Shot_Put/")
+html = urlopen("https://www.tfrrs.org/results/70849/4360880/Big_Dawg_Invitational/")
 soup=BeautifulSoup(html.read());
 resultsTable=soup.find("tbody")
 resultsAndNames=resultsTable.find_all("tr")
@@ -29,81 +28,54 @@ for i in resultsAndNames:
     a=a+1
 
 a=0
-
 for i in namesRows:
     round = namesRows[a].find(class_=True).attrs['class'][0]
     highestmark.append(namesRows[a].find("td", { "class" : round}).getText())
     names.append(namesRows[a].find("a").getText())
     a=a+1
-    
+
 a=0
-highestMark = []
-throwNumber = []
-marksFormatted=[[]]
+marksFormatted=[]
 
 for i in marksRows:
     marks=marksRows[a].findAll("li")
     b=0
+    c=[]
     for i in marks:
         marks[b]=marks[b].getText().strip().strip("m")
-        if marks[b]=="FOUL":
-            marksFormatted[a][b]=420.69
-        marksFormatted[a][b]=marks[b]
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-a=0
-for i in resultsAndNames:
-    if a%2==0:
-        if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:
-            namesRows.append(resultsAndNames[a])
-            b=a+1
-            marksRows.append(resultsAndNames[b])
-    a=a+1
-
-print(namesRows[0].find("a").getText())
-
-print(marksRows[0].prettify())
-
-for i in namesRows
-marksRows[0]
-
-if "Wis_Stevens_Point" not in namesRows[0].find("a"):
-    print ("LOL")
-
-marksRows[0].findAll("li")
-
-marks=[]
-a=0
-for each in marksRows:
-    marks=marksRows[a].findAll("li")
-    b=0
-    championMark=0
-    for eachMark in marks:
-        if marks[b].getText() in "FOUL":
-            if int(marks[b].getText())>championMark:
-                championMark=int(marks[b].getText())
-        print(championMark)
+        if marks[b]=='' :
+            break
+        c.append(marks[b])
         b=b+1
+        print(c)
+    marksFormatted.append(c)
     a=a+1
-    print(one)
 
-for eachMark in marks:
-    if "FOUL" in marks[b].getText:
-        if marks[b].getText>championMark:
-            championMark=marks[b].getText
-    print(championMark)
-    b=b+1
+highestMarks = []
+throwNumbers = []
+a=0
+for i in marksFormatted:
+    championMark=0
+    throwNumber=0
+    b=0
+    for i in marksFormatted[a]:
+        if marksFormatted[a][b] =='FOUL':
+            marksFormatted[a][b]=0
+        if float(marksFormatted[a][b])>championMark:
+            championMark=float(marksFormatted[a][b])
+            throwNumber=b+1
+        b=b+1
+    highestMarks.append(championMark)
+    throwNumbers.append(throwNumber)
+    a=a+1
+
+
+a=0
+for i in names:
+    print(names[a], " threw ", highestMarks[a], " on throw ", throwNumbers[a])
+    a=a+1
+
+
 
 
 
