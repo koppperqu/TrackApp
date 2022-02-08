@@ -1,12 +1,13 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+from numpy import *
 
 html = urlopen("https://www.tfrrs.org/results/70848/4344849/WIAC_Tri/Men's_Shot_Put/")
 soup=BeautifulSoup(html.read());
 resultsTable=soup.find("tbody")
 resultsAndNames=resultsTable.find_all("tr")
 namesRows = []
-#marksRows = []
+marksRows = []
 #Only need nameRows gets name can verify college and also give best mark of meet
 #Grab rows of point throwers
 #Sort through the rows to grab names and marks
@@ -23,14 +24,33 @@ for i in resultsAndNames:
     if a%2==0:
         if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:
             namesRows.append(resultsAndNames[a])
+            b=a+1
+            marksRows.append(resultsAndNames[b])
     a=a+1
 
 a=0
+
 for i in namesRows:
     round = namesRows[a].find(class_=True).attrs['class'][0]
     highestmark.append(namesRows[a].find("td", { "class" : round}).getText())
     names.append(namesRows[a].find("a").getText())
     a=a+1
+    
+a=0
+highestMark = []
+throwNumber = []
+marksFormatted=[[]]
+
+for i in marksRows:
+    marks=marksRows[a].findAll("li")
+    b=0
+    for i in marks:
+        marks[b]=marks[b].getText().strip().strip("m")
+        if marks[b]=="FOUL":
+            marksFormatted[a][b]=420.69
+        marksFormatted[a][b]=marks[b]
+
+    
 
 
 
