@@ -9,6 +9,11 @@
 
 #This function take a url and returns 2 lists first being names second being the marks for that name orginized by index 
 
+
+#!!!!!!!!!!!!!!!!!!!!!
+#Use second style tag to figure our which rounds are not displayed
+#use this round number to find
+#
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 def getPointerResults(url):
@@ -24,11 +29,13 @@ def getPointerResults(url):
 #Due to how the HTML is formatted on the site
     for index,eachRow in enumerate(resultsAndNamesRows):
         if index%2==0:
-            if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:#Grabs first <a> tag which is the correct thrower
+            if "Wis_Stevens_Point" in eachRow.find("a")["href"]:#Grabs first <a> tag which is the correct thrower
                 names.append(eachRow.find("a").getText()) #got rid of for loop with adding to names here
-                marksRows.append(resultsAndNames[index+1])#adds that persons marks row so same index
-                
+                marksRows.append(resultsAndNamesRows[index+1])#adds that persons marks row so same index
+    return names
 
+url = 'https://www.tfrrs.org/results/70849/4360871/Big_Dawg_Invitational/'
+getPointerResults(url)
        #find round might be uselfule later if not delete
        #round = eachNameRow.find(class_=True).attrs['class'][0]
         

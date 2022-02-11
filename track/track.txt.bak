@@ -8,9 +8,10 @@
 #If website route is gone down maybe add a list option to see other schools results or conference standings eventually
 
 #This function take a url and returns 2 lists first being names second being the marks for that name orginized by index 
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
 def getPointerResults(url):
-    from urllib.request import urlopen
-    from bs4 import BeautifulSoup
     html = urlopen(url)
     soup=BeautifulSoup(html.read());
     resultsTable=soup.find("tbody")
@@ -19,16 +20,15 @@ def getPointerResults(url):
     marksRows = []
     names=[]#will get returned
     marks=[]#will get returned
-
 #Goes through the resultsAndNamesRows list every even row is a names row odd rows are marks rows
 #Due to how the HTML is formatted on the site
     for index,eachRow in enumerate(resultsAndNamesRows):
         if index%2==0:
             if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:#Grabs first <a> tag which is the correct thrower
-                names.append(eachRow.find("a").getText())
+                names.append(eachRow.find("a").getText()) #got rid of for loop with adding to names here
                 marksRows.append(resultsAndNames[index+1])#adds that persons marks row so same index
+                
 
-    for eachNameRow in namesRows:
        #find round might be uselfule later if not delete
        #round = eachNameRow.find(class_=True).attrs['class'][0]
         
