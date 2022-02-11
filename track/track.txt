@@ -7,73 +7,82 @@
 #Go back and look at code to see if it could be made better? (refactor)
 #If website route is gone down maybe add a list option to see other schools results or conference standings eventually
 
+#This function take a url and returns 2 lists first being names second being the marks for that name orginized by index 
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-#insert correct url
-html = urlopen("https://www.tfrrs.org/results/70849/4360879/Big_Dawg_Invitational/Women_Weight_Throw/")
-soup=BeautifulSoup(html.read());
-resultsTable=soup.find("tbody")
-resultsAndNames=resultsTable.find_all("tr")
-namesRows = []
-marksRows = []
-names=[]
-highestmark=[]
+def getPointerResults(url):
+    html = urlopen(url)
+    soup=BeautifulSoup(html.read());
+    resultsTable=soup.find("tbody")
+    resultsAndNamesRows=resultsTable.find_all("tr")
+    namesRows = []
+    marksRows = []
+    names=[]#will get returned
+    marks=[]#will get returned
+#Goes through the resultsAndNamesRows list every even row is a names row odd rows are marks rows
+#Due to how the HTML is formatted on the site
+    for index,eachRow in enumerate(resultsAndNamesRows):
+        if index%2==0:
+            if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:#Grabs first <a> tag which is the correct thrower
+                names.append(eachRow.find("a").getText()) #got rid of for loop with adding to names here
+                marksRows.append(resultsAndNames[index+1])#adds that persons marks row so same index
+                
 
-a=0
-for i in resultsAndNames:
-    if a%2==0:
-        if "Wis_Stevens_Point" in resultsAndNames[a].find("a")["href"]:
-            namesRows.append(resultsAndNames[a])
-            b=a+1
-            marksRows.append(resultsAndNames[b])
-    a=a+1
+       #find round might be uselfule later if not delete
+       #round = eachNameRow.find(class_=True).attrs['class'][0]
+        
 
-a=0
-for i in namesRows:
-    round = namesRows[a].find(class_=True).attrs['class'][0]
-    highestmark.append(namesRows[a].find("td", { "class" : round}).getText())
-    names.append(namesRows[a].find("a").getText())
-    a=a+1
+    marksFormatted=[]
 
-a=0
-marksFormatted=[]
+    for i in marksRows:
+        marks=marksRows[a].findAll("li")
+        b=0
+        c=[]
+        for i in marks:
+            marks[b]=marks[b].getText().strip().strip("m")
+            if marks[b]=='' :
+                break
+            c.append(marks[b])
+            b=b+1
+            print(c)
+        marksFormatted.append(c)
+        a=a+1
 
-for i in marksRows:
-    marks=marksRows[a].findAll("li")
-    b=0
-    c=[]
-    for i in marks:
-        marks[b]=marks[b].getText().strip().strip("m")
-        if marks[b]=='' :
-            break
-        c.append(marks[b])
-        b=b+1
-        print(c)
-    marksFormatted.append(c)
-    a=a+1
+    highestMarks = []
+    throwNumbers = []
+    a=0
+    for i in marksFormatted:
+        championMark=0
+        throwNumber=0
+        b=0
+        for i in marksFormatted[a]:
+            if marksFormatted[a][b] =='FOUL':
+                marksFormatted[a][b]=0
+            if float(marksFormatted[a][b])>championMark:
+                championMark=float(marksFormatted[a][b])
+                throwNumber=b+1
+            b=b+1
+        highestMarks.append(championMark)
+        throwNumbers.append(throwNumber)
+        a=a+1
 
-highestMarks = []
-throwNumbers = []
-a=0
-for i in marksFormatted:
-    championMark=0
-    throwNumber=0
-    b=0
-    for i in marksFormatted[a]:
-        if marksFormatted[a][b] =='FOUL':
-            marksFormatted[a][b]=0
-        if float(marksFormatted[a][b])>championMark:
-            championMark=float(marksFormatted[a][b])
-            throwNumber=b+1
-        b=b+1
-    highestMarks.append(championMark)
-    throwNumbers.append(throwNumber)
-    a=a+1
+#Prints who threw what mark on what throw (for testing)
+# a=0
+# for i in names:
+    # print(names[a], " threw ", highestmarks[a], " on throw ", thrownumbers[a])
+    # a=a+1
 
-
-a=0
-for i in names:
-    print(names[a], " threw ", highestMarks[a], " on throw ", throwNumbers[a])
-    a=a+1
-
+import csv
+with open (r"C:\Users\akopp\TrackApp\track\pr.txt", 'r') as f:
+    prs = [row[0] for row in csv.reader(f,delimiter='\t')]
+    prs= (prs[1:])#Gets rid of first row without name or someones pr's
+#Goes through prs to first find person whoes highest mark is getting analyzed(search by last name with contains)
+#Puts the correct index (right name) from prs into a new temp array of marks that go WEIGHT,SHOT,HAMMER,DISCUS
+#Depending on what event is being analyzed for to index 0-3 to check if that number is smaller than the higest mark at the meet
+#If it is it will print a symbol(*) next to the number in the results page to symbolize a pr
+#if not just print number normally (might change to only do pr's)
+#Print event name (ie mens weight) then under Name and distance thrown do for all events put in results file.
+for eachName in names:
+    print(eachName)
+    for eachPr in prs:
