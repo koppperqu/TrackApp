@@ -1,20 +1,22 @@
+#Things to add
+#Get peoples pr to display * is throw was a pr
+#Grab meet name to display what meet results are from
+#Find a way to grab results for men/women shot and weight (4 time running script get correct link to the events
+    #I think if I use meet page then look for mens table then shot's href and weight href then same for women it would work
+#Start with exporting the results to a txt file then maybe later implement php or js to put it into a webpage(html)
+#Go back and look at code to see if it could be made better? (refactor)
+#If website route is gone down maybe add a list option to see other schools results or conference standings eventually
+
+
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 #insert correct url
-html = urlopen("https://www.tfrrs.org/results/70849/4360880/Big_Dawg_Invitational/")
+html = urlopen("https://www.tfrrs.org/results/70849/4360879/Big_Dawg_Invitational/Women_Weight_Throw/")
 soup=BeautifulSoup(html.read());
 resultsTable=soup.find("tbody")
 resultsAndNames=resultsTable.find_all("tr")
 namesRows = []
 marksRows = []
-#Only need nameRows gets name can verify college and also give best mark of meet
-#Grab rows of point throwers
-#Sort through the rows to grab names and marks
-#print out the marks
-
-#Gonna need to grab all marks from meet as cant figure out how to extract best mark of meet from namesRows
-#I belive the code from before works will just need to format it a little was coming out with /name
-# just had a thought maybe it is from prettify the \n CHECK THIS FIRST NEXT TIME
 names=[]
 highestmark=[]
 
@@ -75,10 +77,3 @@ for i in names:
     print(names[a], " threw ", highestMarks[a], " on throw ", throwNumbers[a])
     a=a+1
 
-
-
-
-text=resultsTable.prettify()
-f = open(r"C:\Users\akopp\Desktop\print\track\results.txt", "a", encoding="utf-8")
-f.write(text)
-f.close()
