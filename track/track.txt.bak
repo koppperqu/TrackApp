@@ -20,6 +20,12 @@ def Diff(li1, li2):
     li_dif = [i for i in li1 + li2 if i not in li1 or i not in li2]
     return li_dif
 
+def GetGenderEventURLs(eventsRows, eventName):
+    for eachEvent in eventsRows:
+        if eventName in eachEvent.getText():
+            return 'https:'+(eachEvent.find('a', href=True)['href'])
+    return 'No event found for ' + eventName
+
 def PointerResults(url):
     html = urlopen(url)
     soup=BeautifulSoup(html.read());
@@ -94,8 +100,29 @@ def PointerResults(url):
         print(i, " threw ", highestMarks[index], " on throw ", throwNumbers[index])
     return names,marksFormatted
 
-url = 'https://www.tfrrs.org/results/70849/4360871/Big_Dawg_Invitational/'
-a=PointerResults(url)
+def GetEventURLS(UWSPTFFRSmain):
+    html = urlopen(UWSPTFFRSmain)
+    soup=BeautifulSoup(html.read())
+    latestResults=soup.findAll('div',class_='col-lg-8')[1]
+    mostRecentRow = latestResults.find('tbody').find('tr').findAll('td')
+    mostRecentDate=mostRecentRow[0].getText()
+    mostRecentMeet=mostRecentRow[1]
+    mostRecentMeetURL= mostRecentMeet.find('a', href=True)['href']
+    html = urlopen('http:'+mostRecentMeetURL)
+    soup=BeautifulSoup(html.read())
+    events=soup.findAll('div',class_='col-lg-6')
+    menEvents=events[0].find('tbody')
+    womenEvents=events[1].find('tbody')
+    menEventsRows=menEvents.findAll('tr')
+    womenEventsRows=womenEvents.findAll('tr')
+    listOfEventsURLs=[menEventsRows,womenEvents]
+    return listOfEventsURLs
+
+
+url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
+menANDwomenURL=GetEventURLS(url)
+
+
        #find round might be uselfule later if not delete
        #round = eachNameRow.find(class_=True).attrs['class'][0]
 
