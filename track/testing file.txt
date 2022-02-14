@@ -1,5 +1,55 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-html = urlopen(url)
-soup=BeautifulSoup(html.read());
-a=soup.findAll('style')
+url = 'https://www.tfrrs.org/results/70849/4360871/Big_Dawg_Invitational/'
+
+def Diff(li1, li2):
+    li_dif = [i for i in li1 + li2 if i not in li1 or i not in li2]
+    return li_dif
+
+def PointerResults(url):
+    html = urlopen(url)
+    soup=BeautifulSoup(html.read());
+    #Gets style tags (inlkine style)
+    styles=soup.findAll('style')
+    text=styles[1].getText()
+    wrongRounds=[]
+    round=''
+    classFoundFlag=False
+    #Goes through second style tag to find out which class are not displayed to be able to grab right "round" to get right name and marks.
+    for each in text:
+        if each=='{':
+            classFoundFlag=False
+            wrongRounds.append(round.strip())
+            round=''
+        if classFoundFlag:
+            round=round+each
+        if each=='.':
+            classFoundFlag=True
+    resultsTable=soup.find("tbody")
+    allRoundsNotFound=True
+    foundRounds=[]
+    #stops looking for classes when duplicate is found
+    while allRoundsNotFound:
+        for each in resultsTable.findAll('td'):
+            if each.attrs['class'][0] in foundRounds:
+                allRoundsNotFound=False
+                break
+            foundRounds.append(each.attrs['class'][0])
+    rightRound=(Diff(foundRounds,wrongRounds)[0])#CAUSE EARRORS MAYBE IF MORE THAN one RIGHT ROUND
+    namesRows = []
+    marksRows = []
+    names=[]#will get returned
+    marks=[]#will get returned
+#Goes through the resultsAndNamesRows list every even row is a names row odd rows are marks rows
+#Due to how the HTML is formatted on the site
+    resultsAndNamesRows=resultsTable.findAll('tr')
+    for index,eachRow in enumerate(resultsAndNamesRows):
+        if index%2==0:
+            tabledData=eachRow.findAll('td',class_=rightRound)
+            if "Wis_Stevens_Point" in tabledData[1].find("a")["href"]:#Grabs first <a> tag which is the correct thrower
+                names.append(tabledData[1].find("a").getText()) #got rid of for loop with adding to names here
+                marksRows.append(resultsAndNamesRows[index+1])#adds that persons marks row so same index
+    return names
+
+PointerResults(url)
+print(returnedNames)
