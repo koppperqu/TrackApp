@@ -1,18 +1,18 @@
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
+from querycsv import querycsv
+prs = open("pr.txt", "r")
+prs.readline()#discards first line which just tells what order prs are in
+Names=[]
+WeightPRS=[]
+ShotPRS=[]
+HammerPRS=[]
+DiscusPRS=[]
 
-html = urlopen(url)
-soup=BeautifulSoup(html.read())
-latestResults=soup.findAll('div',class_='col-lg-8')[1]
-mostRecentRow = latestResults.find('tbody').find('tr').findAll('td')
-mostRecentDate=mostRecentRow[0].getText()
-mostRecentMeet=mostRecentRow[1]
-mostRecentMeetURL= mostRecentMeet.find('a', href=True)['href']
-html = urlopen('http:'+mostRecentMeetURL)
-soup=BeautifulSoup(html.read())
-events=soup.findAll('div',class_='col-lg-6')
-menEvents=events[0].find('tbody')
-womenEvents=events[1].find('tbody')
-menEventsRows=menEvents.findAll('tr')
-womenEventsRows=womenEvents.findAll('tr')
+for eachLine in prs:
+    splitline=eachLine.strip().split(",")
+    Names.append(splitline[0])
+    WeightPRS.append(splitline[1])
+    ShotPRS.append(splitline[2])
+    HammerPRS.append(splitline[3])
+    DiscusPRS.append(splitline[4])
+
+prs.close()

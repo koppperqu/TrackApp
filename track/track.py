@@ -23,7 +23,7 @@ def GetGenderEventURLs(eventsRows, eventName):
             return 'https:'+(eachEvent.find('a', href=True)['href'])
     return 'No event found for ' + eventName
 
-#This function takes a url and returns 2 lists first being names second being the marks for that name orginized by index 
+#This function takes a url and returns 2 lists first being names second being the formattedmarks for that name orginized by index 
 def PointerResults(url):
     if 'https' in url:
         html = urlopen(url)
@@ -78,23 +78,29 @@ def PointerResults(url):
                     break
                 c.append(i)
             marksFormatted.append(c)
-        highestMarks = []
-        throwNumbers = []
+        
+        for index,eachname in enumerate(names):
+            nameparts=eachname.strip().split(',')
+            names[index]=nameparts[1].strip()+' '+nameparts[0]
+        #made into own function
+        # highestMarks = []
+        # throwNumbers = []
         for eachRowOfMarks in marksFormatted:
-            championMark=0
-            throwNumber=0
-            for index,mark in enumerate(eachRowOfMarks):
-                if mark =='FOUL':
-                    eachRowOfMarks[index]='0'
-                    #must set mark =0 otherwise it still reads as string 'foul' if on set mark then 'foul' doesnt change to 0 in the output
-                    mark='0'
-                if float(mark)>championMark:
-                    championMark=float(mark)
-                    throwNumber=index+1
-            highestMarks.append(championMark)
-            throwNumbers.append(throwNumber)
-        for index,name in enumerate(names):
-            print(name, " threw ", highestMarks[index], " on throw ", throwNumbers[index])
+            # championMark=0
+            # throwNumber=0
+             for index,mark in enumerate(eachRowOfMarks):
+                 if mark =='FOUL':
+                     eachRowOfMarks[index]='0'
+                     #must set mark =0 otherwise it still reads as string 'foul' if on set mark then 'foul' doesnt change to 0 in the output
+                    # mark='0'
+                # if float(mark)>championMark:
+                    # championMark=float(mark)
+                    # throwNumber=index+1
+            # highestMarks.append(championMark)
+            # throwNumbers.append(throwNumber)
+            #prints who threw highest mark on what throw
+        # for index,name in enumerate(names):
+            # print(name, " threw ", highestMarks[index], " on throw ", throwNumbers[index])
         return names,marksFormatted
     return 'EVENT NOT THROWN'
 
@@ -116,6 +122,40 @@ def GetEventURLS(UWSPTFFRSmain):
     listOfEventsURLs=[menEventsRows,womenEvents]
     return listOfEventsURLs
 
+def GetHighestMarksAndThrowNumber(marksFormatted):
+    highestMarks = []
+    throwNumbers = []
+    for eachRowOfMarks in marksFormatted:
+        championMark=0
+        throwNumber=0
+        for index,mark in enumerate(eachRowOfMarks):
+            if float(mark)>championMark:
+                championMark=float(mark)
+                throwNumber=index+1
+        highestMarks.append(championMark)
+        throwNumbers.append(throwNumber)
+    return (highestMarks,throwNumbers)
+
+def ResultsAndIfPersonalRecord (namesInput,highestMarks):
+    prs = open("pr.txt", "r")
+    prs.readline()#discards first line which just tells what order prs are in
+    Names=[]
+    WeightPRS=[]
+    ShotPRS=[]
+    HammerPRS=[]
+    DiscusPRS=[]
+    for eachLine in prs:
+        splitline=eachLine.strip().split(",")
+        Names.append(splitline[0])
+        WeightPRS.append(splitline[1])
+        ShotPRS.append(splitline[2])
+        HammerPRS.append(splitline[3])
+        DiscusPRS.append(splitline[4])
+    prs.close()
+    for index,eachName in enumerate(namesInput):
+        for index2,eachName2 in enumerate(Names):
+            if eachName==eachName2:
+                print(eachName)
 
 url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
 menANDwomenURL=GetEventURLS(url)
@@ -129,6 +169,12 @@ womenShotURL=GetGenderEventURLs(menANDwomenURL[1],'Shot Put')
 womenWeightURL=GetGenderEventURLs(menANDwomenURL[1],'Weight Throw')
 womenDiscusURL=GetGenderEventURLs(menANDwomenURL[1],'Discus')
 womenHammerURL=GetGenderEventURLs(menANDwomenURL[1],'Hammer')
+shot=PointerResults(menShotURL)
+print(shot[1])
+results=GetHighestMarksAndThrowNumber(shot[1])
+ResultsAndIfPersonalRecord(shot[0],results[0])
+
+
 
 print('\nMen Shot Put \n------------------------------------------')
 print(PointerResults(menShotURL))
