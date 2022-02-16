@@ -136,7 +136,7 @@ def GetHighestMarksAndThrowNumber(marksFormatted):
         throwNumbers.append(throwNumber)
     return (highestMarks,throwNumbers)
 
-def ResultsAndIfPersonalRecord (namesInput,highestMarks):
+def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
     prs = open("pr.txt", "r")
     prs.readline()#discards first line which just tells what order prs are in
     Names=[]
@@ -152,10 +152,45 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks):
         HammerPRS.append(splitline[3])
         DiscusPRS.append(splitline[4])
     prs.close()
+    print (namesInput)
+    indexOfThingToRemove='skip'
+    #removes people there are no prs for
     for index,eachName in enumerate(namesInput):
-        for index2,eachName2 in enumerate(Names):
+        #had to add weird work around because would skip next name if just removed one
+        if indexOfThingToRemove != 'skip':
+            namesInput.remove(namesInput[indexOfThingToRemove])
+            highestMarks.remove(highestMarks[indexOfThingToRemove])
+            indexOfThingToRemove='skip'
+        if eachName not in Names:
+            indexOfThingToRemove=index
+            print('!!!!!No prs removed!!!!! ' + eachName)
+    #figure out what row or pr is needed for each person by taking names that come from tffrs and searching through pr
+    #list to find out what row (index) their prs are on them put that in a list so its goes in order of index from first name in 
+    #list of names from tffrs to last
+    prRow=[]
+    print (namesInput)
+    for eachName in namesInput:
+        for index,eachName2 in enumerate(Names):
             if eachName==eachName2:
-                print('a')
+                prRow.append(index)
+                break #stop going through list saves some time.
+    #Goes through each highest mark to check if it is higher than the corresponding pr
+    if(eventName=='Shot Put'):
+        for index,eachHighestMark in enumerate(highestMarks):
+            if(eachHighestMark>float(ShotPRS[prRow[index]])):
+                print ('PR!! OLD MARK '+ ShotPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
+    if(eventName=='Weight Throw'):
+        for index,eachHighestMark in enumerate(highestMarks):
+            if(eachHighestMark>float(WeightPRS[prRow[index]])):
+                print ('PR!! OLD MARK '+ WeightPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
+    if(eventName=='Discus'):
+        for index,eachHighestMark in enumerate(highestMarks):
+            if(eachHighestMark>float(HammerPRS[prRow[index]])):
+                print ('PR!! OLD MARK '+ HammerPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
+    if(eventName=='Hammer'):
+        for index,eachHighestMark in enumerate(highestMarks):
+            if(eachHighestMark>float(DiscusPRS[prRow[index]])):
+                print ('PR!! OLD MARK '+ DiscusPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
 
 url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
 menANDwomenURL=GetEventURLS(url)
@@ -169,26 +204,37 @@ womenShotURL=GetGenderEventURLs(menANDwomenURL[1],'Shot Put')
 womenWeightURL=GetGenderEventURLs(menANDwomenURL[1],'Weight Throw')
 womenDiscusURL=GetGenderEventURLs(menANDwomenURL[1],'Discus')
 womenHammerURL=GetGenderEventURLs(menANDwomenURL[1],'Hammer')
-shot=PointerResults(menShotURL)
-print(shot[1])
-results=GetHighestMarksAndThrowNumber(shot[1])
-ResultsAndIfPersonalRecord(shot[0],results[0])
+
+pointerResults=PointerResults(womenShotURL)
+results=GetHighestMarksAndThrowNumber(pointerResults[1])
+ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
+# pointerResults=PointerResults(menShotURL)
+# results=GetHighestMarksAndThrowNumber(pointerResults[1])
+# ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Shot Put')
 
 
 
 print('\nMen Shot Put \n------------------------------------------')
-print(PointerResults(menShotURL))
+pointerResults=PointerResults(menShotURL)
+results=GetHighestMarksAndThrowNumber(pointerResults[1])
+ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Shot Put')
 print('\nMen Weight Throw \n------------------------------------------')
-print(PointerResults(menWeightURL))
+pointerResults=PointerResults(menWeightURL)
+results=GetHighestMarksAndThrowNumber(pointerResults[1])
+ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
 print('\nMen Hammer \n------------------------------------------')
 print(PointerResults(menDiscusURL))
 print('\nMen Discus \n------------------------------------------')
 print(PointerResults(menHammerURL))
 
 print('\nWomen Shot Put \n------------------------------------------')
-print(PointerResults(womenShotURL))
+pointerResults=PointerResults(womenShotURL)
+results=GetHighestMarksAndThrowNumber(pointerResults[1])
+ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
 print('\nWomen Weight Throw \n------------------------------------------')
-print(PointerResults(womenWeightURL))
+pointerResults=PointerResults(womenWeightURL)
+results=GetHighestMarksAndThrowNumber(pointerResults[1])
+ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
 print('\nWomen Hammer \n------------------------------------------')
 print(PointerResults(womenDiscusURL))
 print('\nWomen Discus \n------------------------------------------')
