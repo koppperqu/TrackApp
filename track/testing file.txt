@@ -1,17 +1,8 @@
-prs = open("pr.txt", "r")
-prs.readline()#discards first line which just tells what order prs are in
-Names=[]
-WeightPRS=[]
-ShotPRS=[]
-HammerPRS=[]
-DiscusPRS=[]
-
-for eachLine in prs:
-    splitline=eachLine.strip().split(",")
-    Names.append(splitline[0])
-    WeightPRS.append(splitline[1])
-    ShotPRS.append(splitline[2])
-    HammerPRS.append(splitline[3])
-    DiscusPRS.append(splitline[4])
-
-prs.close()
+tester = open('tester.txt', 'r')
+firstline=tester.readline()
+tester.close()
+tester = open('tester.txt', 'w')
+tester.write(firstline.strip())
+tester.write('\nlinetwo')
+tester.write('\nline3')
+tester.close()

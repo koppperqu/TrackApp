@@ -65,9 +65,10 @@ def PointerResults(url):
         for index,eachRow in enumerate(resultsAndNamesRows):
             if index%2==0:
                 tabledData=eachRow.findAll('td',class_=rightRound)
-                if "Wis_Stevens_Point" in tabledData[1].find("a")["href"]:#Grabs first <a> tag which is the correct thrower
-                    names.append(tabledData[1].find("a").getText()) #got rid of for loop with adding to names here
-                    marksRows.append(resultsAndNamesRows[index+1])#adds that persons marks row so same index
+                if (type(tabledData[1].find("a"))) != type(None):
+                    if "Wis_Stevens_Point" in tabledData[1].find("a")["href"]:#Grabs first <a> tag which is the correct thrower
+                        names.append(tabledData[1].find("a").getText()) #got rid of for loop with adding to names here
+                        marksRows.append(resultsAndNamesRows[index+1])#adds that persons marks row so same index
         marksFormatted=[]
         for i in marksRows:
             marks=i.findAll("li")
@@ -138,7 +139,7 @@ def GetHighestMarksAndThrowNumber(marksFormatted):
 
 def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
     prs = open("pr.txt", "r")
-    prs.readline()#discards first line which just tells what order prs are in
+    header=prs.readline()#discards first line which just tells what order prs are in for later use
     Names=[]
     WeightPRS=[]
     ShotPRS=[]
@@ -152,7 +153,6 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
         HammerPRS.append(splitline[3])
         DiscusPRS.append(splitline[4])
     prs.close()
-    print (namesInput)
     indexsOfThingsToRemove=[]
     #removes people there are no prs for
     for index,eachName in enumerate(namesInput):
@@ -175,22 +175,40 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
                 prRow.append(index)
                 break #stop going through list saves some time.
     #Goes through each highest mark to check if it is higher than the corresponding pr
+    import time
+    time.sleep(1)
+    current_date_and_time = time.strftime("%m_%d_%Y_%H_%M_%S")
+    #Makes a backup file of the pr's before they are updated just in case
+    pr = open('pr.txt', 'r')
+    prBackup = open('prBackup_'+current_date_and_time+'.txt', 'x')
+    prBackup.write(pr.read())
+    pr.close()
+    prBackup.close()
+    pr = open('pr.txt', 'w')
+    pr.write(header.strip())
     if(eventName=='Shot Put'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(ShotPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ ShotPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
+                ShotPRS[prRow[index]]=eachHighestMark
     if(eventName=='Weight Throw'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(WeightPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ WeightPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
-    if(eventName=='Discus'):
+                WeightPRS[prRow[index]]=eachHighestMark
+    if(eventName=='Hammer'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(HammerPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ HammerPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
-    if(eventName=='Hammer'):
+                HammerPRS[prRow[index]]=eachHighestMark
+    if(eventName=='Discus'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(DiscusPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ DiscusPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
+                DiscusPRS[prRow[index]]=eachHighestMark
+    for index,eachName in enumerate(Names):
+        pr.write('\n'+Names[index]+','+str(WeightPRS[index])+','+str(ShotPRS[index])+','+str(HammerPRS[index])+','+str(DiscusPRS[index]))
+    pr.close()
 
 url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
 menANDwomenURL=GetEventURLS(url)
@@ -230,7 +248,7 @@ print(PointerResults(menHammerURL))
 print('\nWomen Shot Put \n------------------------------------------')
 pointerResults=PointerResults(womenShotURL)
 results=GetHighestMarksAndThrowNumber(pointerResults[1])
-ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
+ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Shot Put')
 print('\nWomen Weight Throw \n------------------------------------------')
 pointerResults=PointerResults(womenWeightURL)
 results=GetHighestMarksAndThrowNumber(pointerResults[1])
@@ -263,3 +281,4 @@ print(PointerResults(womenHammerURL))
 # for eachName in names:
     # print(eachName)
     # for eachPr in prs:
+input()

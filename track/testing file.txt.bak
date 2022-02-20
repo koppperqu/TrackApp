@@ -1,4 +1,3 @@
-from querycsv import querycsv
 prs = open("pr.txt", "r")
 prs.readline()#discards first line which just tells what order prs are in
 Names=[]
