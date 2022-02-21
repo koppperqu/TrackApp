@@ -179,13 +179,15 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
     #Goes through each highest mark to check if it is higher than the corresponding pr
     import time
     time.sleep(1)
-    current_date_and_time = time.strftime("%m_%d_%Y_%H_%M_%S")
+    current_date_and_time = time.strftime("%m_%d_%Y_%H_%M")
     #Makes a backup file of the pr's before they are updated just in case
-    pr = open('pr.txt', 'r')
-    prBackup = open('prBackup_'+current_date_and_time+'.txt', 'x')
-    prBackup.write(pr.read())
-    pr.close()
-    prBackup.close()
+    import os.path
+    if not (os.path.exists('prBackup_'+current_date_and_time+'.txt')):
+        pr = open('pr.txt', 'r')
+        prBackup = open('prBackup_'+current_date_and_time+'.txt', 'x')
+        prBackup.write(pr.read())
+        pr.close()
+        prBackup.close()
     pr = open('pr.txt', 'w')
     pr.write(header.strip())
     if(eventName=='Shot Put'):
@@ -394,24 +396,24 @@ if 'NamesOfWomenPR_Discus' in locals():
     DiscusPRMarks=DiscusPRMarks+NamesOfWomenPR_Discus[1]
 
 if 'NamesOfMenPR_Shotput' in locals() or 'NamesOfWomenPR_Shotput' in locals():
-    print('Shot Put')
+    print('\n\nShot Put')
     for index,each in enumerate(ShotPutPRNames):
         print(each+' - '+str(ShotPutPRMarks[index]))
 
 if 'NamesOfMenPR_Weight' in locals() or 'NamesOfWomenPR_Weight' in locals():
-    print('Weight')
+    print('\nWeight')
     for index,each in enumerate(WeightPRNames):
         print(each+' - '+str(WeightPRMarks[index]))
 
 if 'NamesOfMenPR_Hammer' in locals() or 'NamesOfWomenPR_Hammer' in locals():
-    print('Hammer')
+    print('\nHammer')
     for index,each in enumerate(HammerPRNames):
         print(each+' - '+str(HammerPRMarks[index]))
 
 if 'NamesOfMenPR_Discus' in locals() or 'NamesOfWomenPR_Discus' in locals():
-    print('Discus')
+    print('\nDiscus')
     for index,each in enumerate(DiscusPRNames):
         print(each+' - '+str(DiscusPRMarks[index]))
 
-print('Press enter twice to close!')
+print('Press enter to close!')
 input()
