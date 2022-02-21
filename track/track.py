@@ -146,6 +146,7 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
     HammerPRS=[]
     DiscusPRS=[]
     NamesToReturn=[]
+    HighestMarksToReturn=[]
     for eachLine in prs:
         splitline=eachLine.strip().split(",")
         Names.append(splitline[0])
@@ -193,28 +194,32 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
                 print ('PR!! OLD MARK '+ ShotPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 ShotPRS[prRow[index]]=eachHighestMark
                 NamesToReturn.append(namesInput[index])
+                HighestMarksToReturn.append(eachHighestMark)
     if(eventName=='Weight Throw'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(WeightPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ WeightPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 WeightPRS[prRow[index]]=eachHighestMark
                 NamesToReturn.append(namesInput[index])
+                HighestMarksToReturn.append(eachHighestMark)
     if(eventName=='Hammer'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(HammerPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ HammerPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 HammerPRS[prRow[index]]=eachHighestMark
                 NamesToReturn.append(namesInput[index])
+                HighestMarksToReturn.append(eachHighestMark)
     if(eventName=='Discus'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(DiscusPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ DiscusPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 DiscusPRS[prRow[index]]=eachHighestMark
                 NamesToReturn.append(namesInput[index])
+                HighestMarksToReturn.append(eachHighestMark)
     for index,eachName in enumerate(Names):
         pr.write('\n'+Names[index]+','+str(WeightPRS[index])+','+str(ShotPRS[index])+','+str(HammerPRS[index])+','+str(DiscusPRS[index]))
     pr.close()
-    return NamesToReturn
+    return NamesToReturn,HighestMarksToReturn
 
 url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
 menANDwomenURL=GetEventURLS(url)
@@ -283,7 +288,7 @@ if womenDiscusPointerResults!='EVENT NOT THROWN':
 
 if 'NamesOfMenPR_Shotput' in locals():
     print('-----------Mens Shotput----------')
-    for eachName in NamesOfMenPR_Shotput:
+    for eachName in NamesOfMenPR_Shotput[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(menShotPointerResults[0]):
             if eachNameInAllMarks==eachName:
@@ -292,7 +297,7 @@ if 'NamesOfMenPR_Shotput' in locals():
 
 if 'NamesOfMenPR_Weight' in locals():
     print('-----------Mens Weight----------')
-    for eachName in NamesOfMenPR_Weight:
+    for eachName in NamesOfMenPR_Weight[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(menWeightPointerResults[0]):
             if eachNameInAllMarks==eachName:
@@ -300,7 +305,7 @@ if 'NamesOfMenPR_Weight' in locals():
 
 if 'NamesOfMenPR_Hammer' in locals():
     print('-----------Mens Hammer----------')
-    for eachName in NamesOfMenPR_Hammer:
+    for eachName in NamesOfMenPR_Hammer[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(menHammerPointerResults[0]):
             if eachNameInAllMarks==eachName:
@@ -308,7 +313,7 @@ if 'NamesOfMenPR_Hammer' in locals():
 
 if 'NamesOfMenPR_Discus' in locals():
     print('-----------Mens Discus----------')
-    for eachName in NamesOfMenPR_Discus:
+    for eachName in NamesOfMenPR_Discus[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(menDiscusPointerResults[0]):
             if eachNameInAllMarks==eachName:
@@ -317,7 +322,7 @@ if 'NamesOfMenPR_Discus' in locals():
 
 if 'NamesOfWomenPR_Shotput' in locals():
     print('-----------Womens Shotput----------')
-    for eachName in NamesOfWomenPR_Shotput:
+    for eachName in NamesOfWomenPR_Shotput[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(womenShotPointerResults[0]):
             if eachNameInAllMarks==eachName:
@@ -325,7 +330,7 @@ if 'NamesOfWomenPR_Shotput' in locals():
 
 if 'NamesOfWomenPR_Weight' in locals():
     print('-----------Womens Weight----------')
-    for eachName in NamesOfWomenPR_Weight:
+    for eachName in NamesOfWomenPR_Weight[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(womenWeightPointerResults[0]):
             if eachNameInAllMarks==eachName:
@@ -333,7 +338,7 @@ if 'NamesOfWomenPR_Weight' in locals():
 
 if 'NamesOfWomenPR_Hammer' in locals():
     print('-----------Womens Hammer----------')
-    for eachName in NamesOfWomenPR_Hammer:
+    for eachName in NamesOfWomenPR_Hammer[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(womenHammerPointerResults[0]):
             if eachNameInAllMarks==eachName:
@@ -341,10 +346,72 @@ if 'NamesOfWomenPR_Hammer' in locals():
 
 if 'NamesOfWomenPR_Discus' in locals():
     print('-----------Womens Discus----------')
-    for eachName in NamesOfWomenPR_Discus:
+    for eachName in NamesOfWomenPR_Discus[0]:
         print (eachName+ ' throw number' , end =' ')
         for index,eachNameInAllMarks in enumerate(womenDiscusPointerResults[0]):
             if eachNameInAllMarks==eachName:
                 print (resultsWomenDiscus[1][index])
+
+ShotPutPRNames=[]
+ShotPutPRMarks=[]
+WeightPRNames=[]
+WeightPRMarks=[]
+HammerPRNames=[]
+HammerPRMarks=[]
+DiscusPRNames=[]
+DiscusPRMarks=[]
+#Doing this this way so if meet only has women or mens prs still prints
+if 'NamesOfMenPR_Shotput' in locals():
+    ShotPutPRNames=ShotPutPRNames+NamesOfMenPR_Shotput[0]
+    ShotPutPRMarks=ShotPutPRMarks+NamesOfMenPR_Shotput[1]
+
+if 'NamesOfMenPR_Weight' in locals():
+    WeightPRNames=WeightPRNames+NamesOfMenPR_Weight[0]
+    WeightPRMarks=WeightPRMarks+NamesOfMenPR_Weight[1]
+
+if 'NamesOfMenPR_Hammer' in locals():
+    HammerPRNames=HammerPRNames+NamesOfMenPR_Hammer[0]
+    HammerPRMarks=HammerPRMarks+NamesOfMenPR_Hammer[1]
+
+if 'NamesOfMenPR_Discus' in locals():
+    DiscusPRNames=DiscusPRNames+NamesOfMenPR_Discus[0]
+    DiscusPRMarks=DiscusPRMarks+NamesOfMenPR_Discus[1]
+
+if 'NamesOfWomenPR_Shotput' in locals():
+    ShotPutPRNames=ShotPutPRNames+NamesOfWomenPR_Shotput[0]
+    ShotPutPRMarks=ShotPutPRMarks+NamesOfWomenPR_Shotput[1]
+
+if 'NamesOfWomenPR_Weight' in locals():
+    WeightPRNames=WeightPRNames+NamesOfWomenPR_Weight[0]
+    WeightPRMarks=WeightPRMarks+NamesOfWomenPR_Weight[1]
+
+if 'NamesOfWomenPR_Hammer' in locals():
+    HammerPRNames=HammerPRNames+NamesOfWomenPR_Hammer[0]
+    HammerPRMarks=HammerPRMarks+NamesOfWomenPR_Hammer[1]
+
+if 'NamesOfWomenPR_Discus' in locals():
+    DiscusPRNames=DiscusPRNames+NamesOfWomenPR_Discus[0]
+    DiscusPRMarks=DiscusPRMarks+NamesOfWomenPR_Discus[1]
+
+if 'NamesOfMenPR_Shotput' in locals() or 'NamesOfWomenPR_Shotput' in locals():
+    print('Shot Put')
+    for index,each in enumerate(ShotPutPRNames):
+        print(each+' - '+str(ShotPutPRMarks[index]))
+
+if 'NamesOfMenPR_Weight' in locals() or 'NamesOfWomenPR_Weight' in locals():
+    print('Weight')
+    for index,each in enumerate(WeightPRNames):
+        print(each+' - '+str(WeightPRMarks[index]))
+
+if 'NamesOfMenPR_Hammer' in locals() or 'NamesOfWomenPR_Hammer' in locals():
+    print('Hammer')
+    for index,each in enumerate(HammerPRNames):
+        print(each+' - '+str(HammerPRMarks[index]))
+
+if 'NamesOfMenPR_Discus' in locals() or 'NamesOfWomenPR_Discus' in locals():
+    print('Discus')
+    for index,each in enumerate(DiscusPRNames):
+        print(each+' - '+str(DiscusPRMarks[index]))
+
 print('Press enter twice to close!')
 input()
