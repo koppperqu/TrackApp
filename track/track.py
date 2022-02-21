@@ -145,6 +145,7 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
     ShotPRS=[]
     HammerPRS=[]
     DiscusPRS=[]
+    NamesToReturn=[]
     for eachLine in prs:
         splitline=eachLine.strip().split(",")
         Names.append(splitline[0])
@@ -191,24 +192,29 @@ def ResultsAndIfPersonalRecord (namesInput,highestMarks,eventName):
             if(eachHighestMark>float(ShotPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ ShotPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 ShotPRS[prRow[index]]=eachHighestMark
+                NamesToReturn.append(namesInput[index])
     if(eventName=='Weight Throw'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(WeightPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ WeightPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 WeightPRS[prRow[index]]=eachHighestMark
+                NamesToReturn.append(namesInput[index])
     if(eventName=='Hammer'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(HammerPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ HammerPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 HammerPRS[prRow[index]]=eachHighestMark
+                NamesToReturn.append(namesInput[index])
     if(eventName=='Discus'):
         for index,eachHighestMark in enumerate(highestMarks):
             if(eachHighestMark>float(DiscusPRS[prRow[index]])):
                 print ('PR!! OLD MARK '+ DiscusPRS[prRow[index]]+' new mark ' + str(eachHighestMark) + ' for ' + namesInput[index])
                 DiscusPRS[prRow[index]]=eachHighestMark
+                NamesToReturn.append(namesInput[index])
     for index,eachName in enumerate(Names):
         pr.write('\n'+Names[index]+','+str(WeightPRS[index])+','+str(ShotPRS[index])+','+str(HammerPRS[index])+','+str(DiscusPRS[index]))
     pr.close()
+    return NamesToReturn
 
 url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
 menANDwomenURL=GetEventURLS(url)
@@ -223,62 +229,122 @@ womenWeightURL=GetGenderEventURLs(menANDwomenURL[1],'Weight Throw')
 womenDiscusURL=GetGenderEventURLs(menANDwomenURL[1],'Discus')
 womenHammerURL=GetGenderEventURLs(menANDwomenURL[1],'Hammer')
 
-# pointerResults=PointerResults(womenShotURL)
-# results=GetHighestMarksAndThrowNumber(pointerResults[1])
-# ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
-# pointerResults=PointerResults(menShotURL)
-# results=GetHighestMarksAndThrowNumber(pointerResults[1])
-# ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Shot Put')
+#This code was for my testing/formatting
+menShotPointerResults=PointerResults(menShotURL)
+if menShotPointerResults!='EVENT NOT THROWN':
+    print('\nMen Shot Put \n------------------------------------------')
+    resultsMenShot=GetHighestMarksAndThrowNumber(menShotPointerResults[1])
+    NamesOfMenPR_Shotput=ResultsAndIfPersonalRecord(menShotPointerResults[0],resultsMenShot[0],'Shot Put')
+
+menWeightPointerResults=PointerResults(menWeightURL)
+if menWeightPointerResults!='EVENT NOT THROWN':
+    print('\nMen Weight Throw \n------------------------------------------')
+    resultsMenWeight=GetHighestMarksAndThrowNumber(menWeightPointerResults[1])
+    NamesOfMenPR_Weight=ResultsAndIfPersonalRecord(menWeightPointerResults[0],resultsMenWeight[0],'Weight Throw')
+
+menHammerPointerResults=PointerResults(menHammerURL)
+if menHammerPointerResults!='EVENT NOT THROWN':
+    print('\nMen Hammer \n------------------------------------------')
+    resultsMenHammer=GetHighestMarksAndThrowNumber(menHammerPointerResults[1])
+    NamesOfMenPR_Hammer=ResultsAndIfPersonalRecord(menHammerPointerResults[0],resultsMenHammer[0],'Hammer')
+
+menDiscusPointerResults=PointerResults(menDiscusURL)
+if menDiscusPointerResults!='EVENT NOT THROWN':
+    print('\nMen Discus \n------------------------------------------')
+    resultsMenDiscus=GetHighestMarksAndThrowNumber(menDiscusPointerResults[1])
+    NamesOfMenPR_Discus=ResultsAndIfPersonalRecord(menDiscusPointerResults[0],resultsMenDiscus[0],'Discus')
+
+womenShotPointerResults=PointerResults(womenShotURL)
+if womenShotPointerResults!='EVENT NOT THROWN':
+    print('\nWomen Shot Put \n------------------------------------------')
+    resultsWomenShot=GetHighestMarksAndThrowNumber(womenShotPointerResults[1])
+    NamesOfWomenPR_Shotput=ResultsAndIfPersonalRecord(womenShotPointerResults[0],resultsWomenShot[0],'Shot Put')
+
+womenWeightPointerResults=PointerResults(womenWeightURL)
+if womenWeightPointerResults!='EVENT NOT THROWN':
+    print('\nWomen Weight Throw \n------------------------------------------')
+    resultsWomenWeight=GetHighestMarksAndThrowNumber(womenWeightPointerResults[1])
+    NamesOfWomenPR_Weight=ResultsAndIfPersonalRecord(womenWeightPointerResults[0],resultsWomenWeight[0],'Weight Throw')
+
+womenHammerPointerResults=PointerResults(womenHammerURL)
+if womenHammerPointerResults!='EVENT NOT THROWN':
+    print('\nWomen Hammer \n------------------------------------------')
+    resultsWomenHammer=GetHighestMarksAndThrowNumber(womenHammerPointerResults[1])
+    NamesOfWomenPR_Hammer=ResultsAndIfPersonalRecord(womenHammerPointerResults[0],resultsWomenHammer[0],'Hammer')
+
+womenDiscusPointerResults=PointerResults(womenDiscusURL)
+if womenDiscusPointerResults!='EVENT NOT THROWN':
+    print('\nWomen Discus \n------------------------------------------')
+    resultsWomenDiscus=GetHighestMarksAndThrowNumber(womenDiscusPointerResults[1])
+    NamesOfWomenPR_Discus=ResultsAndIfPersonalRecord(womenDiscusPointerResults[0],resultsWomenDiscus[0],'Discus')
+
+#This will be formatting for instagram and or info to send to matt for videos for the instagram
 
 
+if 'NamesOfMenPR_Shotput' in locals():
+    print('-----------Mens Shotput----------')
+    for eachName in NamesOfMenPR_Shotput:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(menShotPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsMenShot[1][index])
 
-print('\nMen Shot Put \n------------------------------------------')
-pointerResults=PointerResults(menShotURL)
-results=GetHighestMarksAndThrowNumber(pointerResults[1])
-ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Shot Put')
-print('\nMen Weight Throw \n------------------------------------------')
-pointerResults=PointerResults(menWeightURL)
-results=GetHighestMarksAndThrowNumber(pointerResults[1])
-ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
-print('\nMen Hammer \n------------------------------------------')
-print(PointerResults(menDiscusURL))
-print('\nMen Discus \n------------------------------------------')
-print(PointerResults(menHammerURL))
 
-print('\nWomen Shot Put \n------------------------------------------')
-pointerResults=PointerResults(womenShotURL)
-results=GetHighestMarksAndThrowNumber(pointerResults[1])
-ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Shot Put')
-print('\nWomen Weight Throw \n------------------------------------------')
-pointerResults=PointerResults(womenWeightURL)
-results=GetHighestMarksAndThrowNumber(pointerResults[1])
-ResultsAndIfPersonalRecord(pointerResults[0],results[0],'Weight Throw')
-print('\nWomen Hammer \n------------------------------------------')
-print(PointerResults(womenDiscusURL))
-print('\nWomen Discus \n------------------------------------------')
-print(PointerResults(womenHammerURL))
+if 'NamesOfMenPR_Weight' in locals():
+    print('-----------Mens Weight----------')
+    for eachName in NamesOfMenPR_Weight:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(menWeightPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsMenWeight[1][index])
 
-       #find round might be uselfule later if not delete
-       #round = eachNameRow.find(class_=True).attrs['class'][0]
-       #it was usefull good job me :)
+if 'NamesOfMenPR_Hammer' in locals():
+    print('-----------Mens Hammer----------')
+    for eachName in NamesOfMenPR_Hammer:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(menHammerPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsMenHammer[1][index])
 
-#Prints who threw what mark on what throw (for testing)
-# a=0
-# for i in names:
-    # print(names[a], " threw ", highestmarks[a], " on throw ", thrownumbers[a])
-    # a=a+1
+if 'NamesOfMenPR_Discus' in locals():
+    print('-----------Mens Discus----------')
+    for eachName in NamesOfMenPR_Discus:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(menDiscusPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsMenDiscus[1][index])
 
-# import csv
-# with open (r"C:\Users\akopp\TrackApp\track\pr.txt", 'r') as f:
-    # prs = [row[0] for row in csv.reader(f,delimiter='\t')]
-    # prs= (prs[1:])#Gets rid of first row without name or someones pr's
-# #Goes through prs to first find person whoes highest mark is getting analyzed(search by last name with contains)
-# #Puts the correct index (right name) from prs into a new temp array of marks that go WEIGHT,SHOT,HAMMER,DISCUS
-# #Depending on what event is being analyzed for to index 0-3 to check if that number is smaller than the higest mark at the meet
-# #If it is it will print a symbol(*) next to the number in the results page to symbolize a pr
-# #if not just print number normally (might change to only do pr's)
-# #Print event name (ie mens weight) then under Name and distance thrown do for all events put in results file.
-# for eachName in names:
-    # print(eachName)
-    # for eachPr in prs:
+
+if 'NamesOfWomenPR_Shotput' in locals():
+    print('-----------Womens Shotput----------')
+    for eachName in NamesOfWomenPR_Shotput:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(womenShotPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsWomenShot[1][index])
+
+if 'NamesOfWomenPR_Weight' in locals():
+    print('-----------Womens Weight----------')
+    for eachName in NamesOfWomenPR_Weight:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(womenWeightPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsWomenWeight[1][index])
+
+if 'NamesOfWomenPR_Hammer' in locals():
+    print('-----------Womens Hammer----------')
+    for eachName in NamesOfWomenPR_Hammer:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(womenHammerPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsWomenHammer[1][index])
+
+if 'NamesOfWomenPR_Discus' in locals():
+    print('-----------Womens Discus----------')
+    for eachName in NamesOfWomenPR_Discus:
+        print (eachName+ ' throw number' , end =' ')
+        for index,eachNameInAllMarks in enumerate(womenDiscusPointerResults[0]):
+            if eachNameInAllMarks==eachName:
+                print (resultsWomenDiscus[1][index])
+print('Press enter twice to close!')
 input()
