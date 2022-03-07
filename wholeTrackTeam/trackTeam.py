@@ -42,7 +42,11 @@ for eachLink in womenRoster:
     nameParts=eachLink.getText().split(', ')
     names.append(nameParts[1]+' '+nameParts[0])
     tffrsLink.append(eachLink['href'])
-
+#
+#Works really good up till this point need to decided how to go through all names/pages to update the pr's most effienclty
+#do I rewrite the whole file everytime getting all prs from the team page at the end or just update the existing list adding
+#new people and updating old peoples pr's?
+#
 #Puts each line in the pr file into a string array so they can be modified if needed or added then rewrote to the pr file
 teamPRS=open('team_prs.txt','r')
 holdEachLine = []

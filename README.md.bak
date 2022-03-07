@@ -11,7 +11,4 @@ to make a instagram post for the pointthrows instagram account.
 
 # wholeTrackTeamApp
 
-This is another version of the other python program I am writing to go and get all  
-the teams prs, put them in a formatted file, then go through all the meet results  
-to see if anyone pr'd then display those. Eventually it will be turned into a  
-website, or simple html page to be viewed on a browser that I can host at a later date.
+This is another version of the other python program I am writing to go and get all the teams prs, put them in a formatted file, then go through all the meet results to see if anyone pr'd then display those. Eventually it will be turned into a website, or simple html page to be viewed on a browser that I can host at a later date.

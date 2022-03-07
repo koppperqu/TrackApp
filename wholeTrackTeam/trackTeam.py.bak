@@ -88,7 +88,9 @@ for index,eachLink in enumerate(tffrsLink):#goes through each persons tffrs page
             if not eventFound:
                 if formatEvent!='':
                     print(formatEvent.strip()+' not found')
-            prTemplate.index(event)
+            for eachPRRow in holdEachLine:
+                if names[index] in holdEachLine[0]:
+                    holdEachLine[prTemplate.index(eachEvent)]=marks[prTemplate.index(eachEvent)]
     else :
         print('skipped '+names[index]+' wrong tffrs page')
 
