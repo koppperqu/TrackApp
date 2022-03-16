@@ -108,10 +108,14 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
                     formatEvent=split[0].strip()+' '+split[1].strip()
             #prTemplate.index(formatEvent) gives the index of the event in each row
             #Maybe add error handling for if event not in prTemplate when using index function here <prTemplate.index(formatEvent)>
-            holdEachLine[tffrLinkindex +1][prTemplate.index(formatEvent)]=mark[eventIndex]
+            #print (eachEvent)
+            #################MUST FORMAT MARKS####################
+            if formatEvent != "":
+                holdEachLine[tffrLinkindex +1][prTemplate.index(formatEvent)]=marks[eventIndex].getText().strip()
     else :
         print('skipped '+names[index]+' wrong tffrs page')
 
+print (holdEachLine)
 # html = urlopen('https:'+tffrsLink[0])
 # soup=BeautifulSoup(html.read(), "html.parser")
 # soup=soup.find('table',class_='table bests')#grabs the personal bests table
