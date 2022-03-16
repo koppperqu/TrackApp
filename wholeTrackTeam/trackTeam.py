@@ -1,3 +1,6 @@
+#This file will go out and grab all the prs of the team before the season starts so everyone has an entry.
+#If someone is added to the team during the season then they will just be added to the list as the season goes on.
+#I.E. look in pr list is name not found go get their pr's from tffrs.
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 html = urlopen('https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html')
@@ -42,24 +45,43 @@ for eachLink in womenRoster:
     nameParts=eachLink.getText().split(', ')
     names.append(nameParts[1]+' '+nameParts[0])
     tffrsLink.append(eachLink['href'])
-#
-#Works really good up till this point need to decided how to go through all names/pages to update the pr's most effienclty
-#do I rewrite the whole file everytime getting all prs from the team page at the end or just update the existing list adding
-#new people and updating old peoples pr's?
-#
+
+#Create backup of old list then create new pr file with the people on the team when the script is ran (right now)
+#Old files can be used for other fun things im sure
+#Creates backups works as of 03/16/2022
+import time
+current_date_and_time = time.strftime("%m_%d_%Y_%H_%M")
+dt = time.strftime("%m_%d_%Y_%H_%M")
+teamPRSToBeBackedUp = open('team_prs.txt','r')
+filename = "backups/team_prs_"+dt+'.txt'
+teamPRBackup = open(filename, "a")
+teamPRBackup.write(teamPRSToBeBackedUp.read())
+teamPRBackup.close()
+teamPRSToBeBackedUp.close()
+clearteamPRS = open('team_prs.txt','w')
+clearteamPRS.close()
+
 #Puts each line in the pr file into a string array so they can be modified if needed or added then rewrote to the pr file
+
+
+prTemplate=['Name','60','100','200','300','400','600','800','1000','1500','8K (XC)','6K (XC)','2 MILE','MILE','3000','5000','10,000','100H','110H','60H','55H','400H','3000S','4x100','4x400','DMR','HJ','PV','LJ','TJ','SP','WT','DT','HT','JT','DEC','HEP','PENT']
+newPRLine=['name','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark']
+#only needed if updating the list
 teamPRS=open('team_prs.txt','r')
 holdEachLine = []
-prTemplate=['Name','60','100','200','300','400','600','800','1000','1500','8K (XC)','6K (XC)','2 MILE','MILE','3000','5000','10,000','100H','110H','60H','55H','400H','3000S','4x100','4x400','DMR','HJ','PV','LJ','TJ','SP','WT','DT','HT','JT','DEC','HEP','PENT']
-newPRLine=['name','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark']
+holdEachLine.append(prTemplate)
 for eachLine in teamPRS:
     holdEachLine.append(eachLine.split('|'))
 
 teamPRS.close()
-for index,eachLink in enumerate(tffrsLink):#goes through each persons tffrs page
+
+#This code will look through the list but wont find anything because file will be empty
+#legacy code should be fixed
+
+for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tffrs page
     html = urlopen('https:'+eachLink)
     soup=BeautifulSoup(html.read(), "html.parser")
-    if names[index] in soup.find('title').getText():#checks to make sure it is correct person
+    if names[tffrLinkindex] in soup.find('title').getText():#checks to make sure it is correct person
         soup=soup.find('table',class_='table bests')#grabs the personal bests table
         soup=soup.findAll('td')
         events=[]
@@ -71,12 +93,11 @@ for index,eachLink in enumerate(tffrsLink):#goes through each persons tffrs page
                 marks.append(each)
         for eachLine in holdEachLine:#check to see if the person is in the pr list if not add it with newPRLine
             notFoundInList=True
-            if names[index] in holdEachLine[0]:#if not in the list then add row change new prLine name to correct name
-                print('bool set bc it was found')
+            if names[tffrLinkindex] in holdEachLine[0]:#bool set bc it was found in list
                 notFoundInList=False
-        if notFoundInList:
+        if notFoundInList:#adds newPRLine with persons name
             import copy
-            newPRLine[0]=names[index]
+            newPRLine[0]=names[tffrLinkindex]
             holdEachLine.append(copy.deepcopy(newPRLine))
         for eachEvent in events:#for each event on the persons page look for the row in holdEachLine then change it to be correct pr
             eventFound=False
@@ -86,6 +107,7 @@ for index,eachLink in enumerate(tffrsLink):#goes through each persons tffrs page
                 if each in formatEvent:
                     split=formatEvent.split(' ')
                     formatEvent=split[0].strip()+' '+split[1].strip()
+            #Slow original code
             for eventIndex,event in enumerate(prTemplate):#checks to make sure all events are in the pr template
                 if formatEvent==event:
                     eventFound=True
@@ -93,16 +115,16 @@ for index,eachLink in enumerate(tffrsLink):#goes through each persons tffrs page
                 if formatEvent!='':
                     print(formatEvent.strip()+' not found')
             for eachPRRow in holdEachLine:
-                if names[index] in holdEachLine[0]:
-                    holdEachLine[prTemplate.index(eachEvent)]=marks[prTemplate.index(eachEvent)]
+                if names[tffrLinkindex] in holdEachLine[0]:
+                    holdEachLine[tffrLinkindex][eventIndex]=marks[prTemplate.index(eachEvent)]
     else :
         print('skipped '+names[index]+' wrong tffrs page')
 
-html = urlopen('https:'+tffrsLink[0])
-soup=BeautifulSoup(html.read(), "html.parser")
-soup=soup.find('table',class_='table bests')#grabs the personal bests table
-soup=soup.findAll('td')
-print(soup[1].getText().strip())
+# html = urlopen('https:'+tffrsLink[0])
+# soup=BeautifulSoup(html.read(), "html.parser")
+# soup=soup.find('table',class_='table bests')#grabs the personal bests table
+# soup=soup.findAll('td')
+# print(soup[1].getText().strip())
 
-print (names)
-print (tffrsLink)
+# print (names)
+# print (tffrsLink)
