@@ -99,24 +99,16 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
             import copy
             newPRLine[0]=names[tffrLinkindex]
             holdEachLine.append(copy.deepcopy(newPRLine))
-        for eachEvent in events:#for each event on the persons page look for the row in holdEachLine then change it to be correct pr
-            eventFound=False
+        for eventIndex,eachEvent in enumerate(events):#for each event on the persons page go to the row with their name (tffrLinkindex + 1) since list is being created from scratch and set pr mark(eventIndex) on correct spot (prTemplate.index(formatEvent))
             formatEvent=eachEvent.getText().strip()
             specialEvents=['8K','6K','2 MILE']#special case events that must get formmate different because space in the name
             for each in specialEvents:
                 if each in formatEvent:
                     split=formatEvent.split(' ')
                     formatEvent=split[0].strip()+' '+split[1].strip()
-            #Slow original code
-            for eventIndex,event in enumerate(prTemplate):#checks to make sure all events are in the pr template
-                if formatEvent==event:
-                    eventFound=True
-            if not eventFound:
-                if formatEvent!='':
-                    print(formatEvent.strip()+' not found')
-            for eachPRRow in holdEachLine:
-                if names[tffrLinkindex] in holdEachLine[0]:
-                    holdEachLine[tffrLinkindex][eventIndex]=marks[prTemplate.index(eachEvent)]
+            #prTemplate.index(formatEvent) gives the index of the event in each row
+            #Maybe add error handling for if event not in prTemplate when using index function here <prTemplate.index(formatEvent)>
+            holdEachLine[tffrLinkindex +1][prTemplate.index(formatEvent)]=mark[eventIndex]
     else :
         print('skipped '+names[index]+' wrong tffrs page')
 
