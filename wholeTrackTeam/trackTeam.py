@@ -131,8 +131,12 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
 teamPRS=open('team_prs.txt','w')
 for eachRow in holdEachLine:
     lineToAdd=''
-    for eachColumn in eachRow:
-        lineToAdd=lineToAdd+eachColumn+'|'
+    eachRowLength=len(eachRow)-1
+    for columnIndex, eachColumn in enumerate(eachRow):
+        if columnIndex == eachRowLength:
+            lineToAdd=lineToAdd+eachColumn
+        else:
+            lineToAdd=lineToAdd+eachColumn+'|'
     teamPRS.write(lineToAdd.strip()+'\n')
 
 teamPRS.close()

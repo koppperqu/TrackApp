@@ -112,7 +112,7 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
             #################MUST FORMAT MARKS####################
             #formats mark
             formatMark=marks[eventIndex].getText().strip()
-            if formatEvent in ['HJ','PV','LJ','TJ','SP','WT','DT','HT','JT','100','200','110H']:
+            if formatEvent in ['HJ','PV','LJ','TJ','SP','WT','DT','HT','JT','100','200','110H','100H']:
                 holdCharacters=[]
                 tempmark=''
                 #Need to go through mark and find m then only use what before m for the mark.
@@ -132,7 +132,10 @@ teamPRS=open('team_prs.txt','w')
 for eachRow in holdEachLine:
     lineToAdd=''
     for eachColumn in eachRow:
-        lineToAdd=lineToAdd+eachColumn+'|'
+        if eachColumn == eachRow[-1]:
+            lineToAdd=lineToAdd+eachColumn
+        else:
+            lineToAdd=lineToAdd+eachColumn+'|'
     teamPRS.write(lineToAdd.strip()+'\n')
 
 teamPRS.close()
