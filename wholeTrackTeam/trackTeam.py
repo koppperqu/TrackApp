@@ -110,12 +110,32 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
             #Maybe add error handling for if event not in prTemplate when using index function here <prTemplate.index(formatEvent)>
             #print (eachEvent)
             #################MUST FORMAT MARKS####################
+            #formats mark
+            formatMark=marks[eventIndex].getText().strip()
+            if formatEvent in ['HJ','PV','LJ','TJ','SP','WT','DT','HT','JT','100','200','110H','100H']:
+                holdCharacters=[]
+                tempmark=''
+                #Need to go through mark and find m then only use what before m for the mark.
+                for eachLetter in formatMark:
+                    if eachLetter=='m' or eachLetter=='(':
+                        break
+                    holdCharacters.append(eachLetter)
+                for each in holdCharacters:
+                    tempmark=tempmark+each
+                formatMark=tempmark
             if formatEvent != "":
-                holdEachLine[tffrLinkindex +1][prTemplate.index(formatEvent)]=marks[eventIndex].getText().strip()
+                holdEachLine[tffrLinkindex +1][prTemplate.index(formatEvent)]=formatMark.strip()
     else :
         print('skipped '+names[index]+' wrong tffrs page')
 
-print (holdEachLine)
+teamPRS=open('team_prs.txt','w')
+for eachRow in holdEachLine:
+    lineToAdd=''
+    for eachColumn in eachRow:
+        lineToAdd=lineToAdd+eachColumn+'|'
+    teamPRS.write(lineToAdd.strip()+'\n')
+
+teamPRS.close()
 # html = urlopen('https:'+tffrsLink[0])
 # soup=BeautifulSoup(html.read(), "html.parser")
 # soup=soup.find('table',class_='table bests')#grabs the personal bests table
