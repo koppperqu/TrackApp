@@ -1,7 +1,6 @@
-#This file will go out and grab all the prs of the team before the season starts (or whenever) so everyone has an entry.
+#This file will go out and grab all the prs of the team before the season starts so everyone has an entry.
 #If someone is added to the team during the season then they will just be added to the list as the season goes on.
 #I.E. look in pr list is name not found go get their pr's from tffrs.
-#Should also say print something in console if a event is found that is not recorded
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 html = urlopen('https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html')
