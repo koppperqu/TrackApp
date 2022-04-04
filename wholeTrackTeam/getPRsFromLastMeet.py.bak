@@ -1,31 +1,31 @@
-#This file will ask user if they want the most recent track meet results or if they want to enter in a meet manualy
-#in the event a meet took place and this file was not executed
-response=input('Do you want PR\'s from the most recent track meet? (y/n): ')
-#n
-Y              # FOR TESTING IN CMD comment out for running the file to work
-correctResponse=False
-validResponses=['y','n','Y','N']
-while not correctResponse:
-    for eachValidResponse in validResponses:
-        if response==eachValidResponse:
-            correctResponse=True
-    if not correctResponse:
-        response=input ('please enter valid answer y or n: ')
+# #This file will ask user if they want the most recent track meet results or if they want to enter in a meet manualy
+# #in the event a meet took place and this file was not executed
+# response=input('Do you want PR\'s from the most recent track meet? (y/n): ')
+# #n
+# Y              # FOR TESTING IN CMD comment out for running the file to work
+# correctResponse=False
+# validResponses=['y','n','Y','N']
+# while not correctResponse:
+    # for eachValidResponse in validResponses:
+        # if response==eachValidResponse:
+            # correctResponse=True
+    # if not correctResponse:
+        # response=input ('please enter valid answer y or n: ')
 
-response=response.lower()
-if response =='y':
-    url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
+# response=response.lower()
+# if response =='y':
+    # url = 'https://www.tfrrs.org/teams/WI_college_m_Wis_Stevens_Point.html'
 
-if response =='n':
-    url = input('Please go to the meet you would like to get the PR\'s from and paste the URL here ')
-    goodURL=False
-    while not goodURL:
-        if 'https://www.tfrrs.org' not in url:
-            url = input('Please paste a valid TFRRS link -> ')
-        else:
-            goodURL=True
+# if response =='n':
+    # url = input('Please go to the meet you would like to get the PR\'s from and paste the URL here ')
+    # goodURL=False
+    # while not goodURL:
+        # if 'https://www.tfrrs.org' not in url:
+            # url = input('Please paste a valid TFRRS link -> ')
+        # else:
+            # goodURL=True
 
-print ('Getting PR\'s from most recent results')
+# print ('Getting PR\'s from most recent results')
 
 #VVVVComments are me debating on how to go about cheking for pr's
 
@@ -92,7 +92,7 @@ for eachLink in womenRoster:
 
 #Template rows
 prTemplate=['Name','60','100','200','300','400','600','800','1000','1500','8K (XC)','6K (XC)','2 MILE','MILE','3000','5000','10,000','100H','110H','60H','55H','400H','3000S','4x100','4x400','DMR','HJ','PV','LJ','TJ','SP','WT','DT','HT','JT','DEC','HEP','PENT']
-newRowToAdd=['name','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark']
+newPRLine=['name','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark','nomark']
 #only needed if someone is not in the list
 
 #Puts each row from the pr text file into a list
@@ -104,8 +104,8 @@ for eachLine in teamPRS:
 
 teamPRS.close()
 
-import copt
-forUpdatingPRFileIfRequested=copy.deepcopy(holdEachLine)
+import copy
+forUpdatingPRFile=copy.deepcopy(holdEachLine)
 
 #This code goes to each URL in the tffrsLink list and sees if the person has any pr's
 
@@ -128,10 +128,10 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
         if names[tffrLinkindex] in holdEachLine[0]:#bool set bc it was found in list
             notFoundInList=False
     if notFoundInList:#adds newPRLine with persons name
-        import copy
         newPRLine[0]=names[tffrLinkindex]
         holdEachLine.append(copy.deepcopy(newPRLine))
-    for eventIndex,eachEvent in enumerate(events):#for each event on the persons page go to the row with their name (tffrLinkindex + 1) since list is being created from scratch and set pr mark(eventIndex) on correct spot (prTemplate.index(formatEvent))
+    for eventIndex,eachEvent in enumerate(events):#for each event on the persons page go to the row with their name
+    #and set pr mark(eventIndex) on correct spot (prTemplate.index(formatEvent))
         formatEvent=eachEvent.getText().strip()
         specialEvents=['8K','6K','2 MILE']#special case events that must get formmate different because space in the name
         for each in specialEvents:
@@ -155,13 +155,25 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
             for each in holdCharacters:
                 tempmark=tempmark+each
             formatMark=tempmark
+        #This will find the index(row) the person is in holdEachLine
+        for correctRowInHoldEachLine,eachLine in enumerate(holdEachLine):
+            if eachLine[0]==names[tffrLinkindex]:
+                break
+        for correctRowInforUpdatingPRFile,eachLine in enumerate(forUpdatingPRFile):
+            if eachLine[0]==names[tffrLinkindex]:
+                break
         if formatEvent != "":
-            holdEachLine[tffrLinkindex +1][prTemplate.index(formatEvent)]=formatMark.strip()
+            holdEachLine[correctRowInHoldEachLine][prTemplate.index(formatEvent)]=formatMark.strip()
+            if forUpdatingPRFile[correctRowInforUpdatingPRFile][prTemplate.index(formatEvent)]!=holdEachLine[correctRowInHoldEachLine][prTemplate.index(formatEvent)]:
+                if forUpdatingPRFile[correctRowInforUpdatingPRFile][prTemplate.index(formatEvent)]=='nomark':
+                    print (names[tffrLinkindex]+' did the ' + formatEvent + ' for the fist time their pr is '+ holdEachLine[correctRowInHoldEachLine][prTemplate.index(formatEvent)])
+                else:
+                print (names[tffrLinkindex]+' pr\'d in ' + formatEvent + ' their old one was ' + forUpdatingPRFile[correctRowInforUpdatingPRFile][prTemplate.index(formatEvent)] + ' new pr is ' + holdEachLine[correctRowInHoldEachLine][prTemplate.index(formatEvent)])
 
-print (url)
+# print (url)
 
 
 
 
 
-input('Press Enter to Close')
+# input('Press Enter to Close')
