@@ -176,4 +176,4 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
 
 
 
-# input('Press Enter to Close')
+input('Press Enter to Close')

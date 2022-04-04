@@ -1,6 +1,15 @@
+.title{
+	color:#FFC425;
+}
 body {
 	background-color:#492F92;
 }
 .jumbotron{
 	margin-top:5%;
+}
+#collapsedText{
+	border:none;
+}
+#mostRecentPRText{
+	color:#FFC425;
 }

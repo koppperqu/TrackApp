@@ -168,7 +168,7 @@ for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tf
                 if forUpdatingPRFile[correctRowInforUpdatingPRFile][prTemplate.index(formatEvent)]=='nomark':
                     print (names[tffrLinkindex]+' did the ' + formatEvent + ' for the fist time their pr is '+ holdEachLine[correctRowInHoldEachLine][prTemplate.index(formatEvent)])
                 else:
-                print (names[tffrLinkindex]+' pr\'d in ' + formatEvent + ' their old one was ' + forUpdatingPRFile[correctRowInforUpdatingPRFile][prTemplate.index(formatEvent)] + ' new pr is ' + holdEachLine[correctRowInHoldEachLine][prTemplate.index(formatEvent)])
+                    print (names[tffrLinkindex]+' pr\'d in ' + formatEvent + ' their old one was ' + forUpdatingPRFile[correctRowInforUpdatingPRFile][prTemplate.index(formatEvent)] + ' new pr is ' + holdEachLine[correctRowInHoldEachLine][prTemplate.index(formatEvent)])
 
 # print (url)
 
