@@ -20,7 +20,7 @@ def Diff(li1, li2):
 def GetGenderEventURLs(eventsRows, eventName):
     for eachEvent in eventsRows:
         if eventName in eachEvent.getText():
-            return 'https:'+(eachEvent.find('a', href=True)['href'])
+            return (eachEvent.find('a', href=True)['href'])
     return 'No event found for ' + eventName
 
 #This function takes a url and returns 2 lists first being names second being the formattedmarks for that name orginized by index 
@@ -28,33 +28,7 @@ def PointerResults(url):
     if 'https' in url:
         html = urlopen(url)
         soup=BeautifulSoup(html.read(), "html.parser");
-        #Gets style tags (inlkine style)
-        styles=soup.findAll('style')
-        text=styles[1].getText()
-        wrongRounds=[]
-        round=''
-        classFoundFlag=False
-        #Goes through second style tag to find out which class are not displayed to be able to grab right "round" to get right name and marks.
-        for each in text:
-            if each=='{':
-                classFoundFlag=False
-                wrongRounds.append(round.strip())
-                round=''
-            if classFoundFlag:
-                round=round+each
-            if each=='.':
-                classFoundFlag=True
         resultsTable=soup.find("tbody")
-        allRoundsNotFound=True
-        foundRounds=[]
-        #stops looking for classes when duplicate is found
-        while allRoundsNotFound:
-            for each in resultsTable.findAll('td'):
-                if each.attrs['class'][0] in foundRounds:
-                    allRoundsNotFound=False
-                    break
-                foundRounds.append(each.attrs['class'][0])
-        rightRound=(Diff(foundRounds,wrongRounds)[0])#CAUSE EARRORS MAYBE IF MORE THAN one RIGHT ROUND
         namesRows = []
         marksRows = []
         names=[]#will get returned
@@ -64,7 +38,7 @@ def PointerResults(url):
         resultsAndNamesRows=resultsTable.findAll('tr')
         for index,eachRow in enumerate(resultsAndNamesRows):
             if index%2==0:
-                tabledData=eachRow.findAll('td',class_=rightRound)
+                tabledData=eachRow.findAll('td')
                 if (type(tabledData[1].find("a"))) != type(None):
                     if "Wis_Stevens_Point" in tabledData[1].find("a")["href"]:#Grabs first <a> tag which is the correct thrower
                         names.append(tabledData[1].find("a").getText()) #got rid of for loop with adding to names here
@@ -81,8 +55,8 @@ def PointerResults(url):
             marksFormatted.append(c)
         
         for index,eachname in enumerate(names):
-            nameparts=eachname.strip().split(',')
-            names[index]=nameparts[1].strip()+' '+nameparts[0]
+            nameparts=eachname.strip().split(' ')
+            names[index]=nameparts[0].strip()+' '+nameparts[1].strip()
         #made into own function
         # highestMarks = []
         # throwNumbers = []
@@ -113,7 +87,7 @@ def GetEventURLS(UWSPTFFRSmain):
     mostRecentDate=mostRecentRow[0].getText()
     mostRecentMeet=mostRecentRow[1]
     mostRecentMeetURL= mostRecentMeet.find('a', href=True)['href']
-    html = urlopen('http:'+mostRecentMeetURL)
+    html = urlopen('https://www.tfrrs.org'+mostRecentMeetURL)
     soup=BeautifulSoup(html.read(), "html.parser")
     events=soup.findAll('div',class_='col-lg-6')
     menEvents=events[0].find('tbody')
