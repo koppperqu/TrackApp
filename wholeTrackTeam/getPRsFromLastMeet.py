@@ -74,7 +74,7 @@ for eachLink in menRoster:
     tffrsLink.append(eachLink['href'])
 
 #gets the womens roster div
-html = urlopen('https:'+womensURL)
+html = urlopen('https://www.tfrrs.org'+womensURL)
 soup=BeautifulSoup(html.read(), "html.parser")
 womenRoster = soup.findAll('div',class_='col-lg-4')
 for div in womenRoster:
@@ -112,7 +112,7 @@ forUpdatingPRFile=copy.deepcopy(holdEachLine)
 #ABOVE SHOULD WORK (UNTESTED) BELOW NEEDS TO BE MODIFED
 
 for tffrLinkindex,eachLink in enumerate(tffrsLink):#goes through each persons tffrs page and finds the row in the holdEachLine list
-    html = urlopen('https:'+eachLink)
+    html = urlopen('https://www.tfrrs.org'+eachLink)
     soup=BeautifulSoup(html.read(), "html.parser")
     soup=soup.find('table',class_='table bests')#grabs the personal bests table
     soup=soup.findAll('td')

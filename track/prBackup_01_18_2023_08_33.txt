@@ -1,13 +1,13 @@
 Name,Weight_PR,Shot_PR,Hammer_PR,Discus_PR
 Blake Orr,18.22,15.69,56.75,48.49
-Austin Kopp,14.72,12.20,42.92,36.16
-Jacob Ulrich,14.35,12.61,40.80,34.19
-Dilan Schneider,16.89,13.82,44.94,34.73
-Austin Rennhack,14.62,14.91,0,0
-Dalton Lebal,12.16,10.91,0,0
-Andrew Durham,14.98,10.45,0,0
-Matt Vosberg,13.09,10.27,0,0
-Makenzie Lueck,12.84,11.72,41.23,35.40
+Austin Kopp,13.64,12.20,42.92,36.16
+Jacob Ulrich,14.35,12.58,40.80,34.19
+Dilan Schneider,15.66,13.71,44.94,34.73
+Austin Rennhack,14.20,14.87,0,0
+Dalton Lebal,10.67,10.91,0,0
+Andrew Durham,13.49,10.45,0,0
+Matt Vosberg,11.97,10.27,0,0
+Makenzie Lueck,12.84,11.71,41.23,35.40
 Miranda Lang,12.62,11.14,32.94,28.56
 Lupe Corn,12.53,10.31,0,0
 Jillian Hesse,15.61,10.48,39.27,39.75
@@ -21,7 +21,7 @@ Taylor Zentner,12.50,10.17,32.09,31.97
 Colton Brecka,0,7.63,0,0
 Alex Swanson,13.13,9.06,0,0
 Carter Dachelet,8.79,10.24,0,0
-Jacob McConnell,13.05,10.84,0,0
+Jacob McConnell,0,0,0,0
 Bella Harriman,0,11.3,0,0
 Brindelyn Eternicka,0,8.78,0,0
 Brenna Steinagel,0,7.93,0,0

@@ -56,7 +56,11 @@ def PointerResults(url):
         
         for index,eachname in enumerate(names):
             nameparts=eachname.strip().split(' ')
-            names[index]=nameparts[0].strip()+' '+nameparts[1].strip()
+            tempName=''
+            for eachPart in nameparts:
+                if (eachPart!=' ') & (eachPart!=''):
+                    tempName+=eachPart+' '
+            names[index]=tempName.strip()
         #made into own function
         # highestMarks = []
         # throwNumbers = []
